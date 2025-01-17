@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
+import { motion } from 'framer-motion'; // Import Framer Motion
 import abi from './contract/Voting.json';
 import './App.css';
 
@@ -151,116 +152,155 @@ function App() {
 
   return (
     <div className="bg-gray-100 min-h-screen py-10 px-6">
-      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
+      <motion.div
+        className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
         <h1 className="text-4xl font-extrabold text-center mb-8 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text drop-shadow-lg">
           Decentralized Voting System
         </h1>
         {!currentAccount ? (
-          <button
+          <motion.button
             onClick={connectWallet}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full">
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full"
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: 'spring', stiffness: 200 }}
+          >
             Connect Wallet
-          </button>
+          </motion.button>
         ) : (
           <>
             <div className="mb-4">
               <h2 className="text-xl font-semibold">Register Voter</h2>
-              <input
+              <motion.input
                 type="text"
                 placeholder="Voter Name"
                 className="border rounded-lg p-2 w-full mb-2"
                 value={voterData.name}
                 onChange={(e) => handleInputChange(e, setVoterData, 'name')}
+                whileFocus={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
               />
-              <input
+              <motion.input
                 type="text"
                 placeholder="Voter Address"
                 className="border rounded-lg p-2 w-full mb-2"
                 value={voterData.address}
                 onChange={(e) => handleInputChange(e, setVoterData, 'address')}
+                whileFocus={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
               />
-              <input
+              <motion.input
                 type="number"
                 placeholder="Age"
                 className="border rounded-lg p-2 w-full mb-2"
                 value={voterData.age}
                 onChange={(e) => handleInputChange(e, setVoterData, 'age')}
+                whileFocus={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
               />
-              <button
+              <motion.button
                 onClick={registerVoter}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full">
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full"
+                whileTap={{ scale: 0.95 }}
+              >
                 Register Voter
-              </button>
+              </motion.button>
             </div>
+
             <div className="mb-4">
               <h2 className="text-xl font-semibold">Add Candidate</h2>
-              <input
+              <motion.input
                 type="text"
                 placeholder="Candidate Name"
                 className="border rounded-lg p-2 w-full mb-2"
                 value={candidateData.name}
                 onChange={(e) => handleInputChange(e, setCandidateData, 'name')}
+                whileFocus={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
               />
-              <input
+              <motion.input
                 type="text"
                 placeholder="Candidate Address"
                 className="border rounded-lg p-2 w-full mb-2"
                 value={candidateData.address}
                 onChange={(e) => handleInputChange(e, setCandidateData, 'address')}
+                whileFocus={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
               />
-              <input
+              <motion.input
                 type="number"
                 placeholder="Age"
                 className="border rounded-lg p-2 w-full mb-2"
                 value={candidateData.age}
                 onChange={(e) => handleInputChange(e, setCandidateData, 'age')}
+                whileFocus={{ scale: 1.05 }}
               />
-              <button
+              <motion.button
                 onClick={addCandidate}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full">
+                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 w-full"
+                whileTap={{ scale: 0.95 }}
+              >
                 Add Candidate
-              </button>
+              </motion.button>
             </div>
+
             <div className="mb-4">
-              <h2 className="text-xl font-semibold">Vote</h2>
-              <ul>
-                {candidates.map((candidate) => (
-                  <li key={candidate.id} className="mb-2">
-                    <div>
-                      <strong>{candidate.name}</strong> (Votes: {candidate.votes})
-                    </div>
-                    <button
-                      onClick={() => vote(candidate.id)}
-                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-                      Vote
-                    </button>
-                    <button
-                      onClick={() => removeCandidate(candidate.id)}
-                      className="ml-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-                      Remove
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="mb-4">
-              <h2 className="text-xl font-semibold">Winner</h2>
-              {winner ? (
-                <div>
-                  <strong>Name:</strong> {winner.name} <br />
-                  <strong>Votes:</strong> {winner.votes}
-                </div>
+              <h2 className="text-xl font-semibold">Candidates List</h2>
+              {candidates.length > 0 ? (
+                <motion.ul
+                  className="list-none space-y-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {candidates.map((candidate) => (
+                    <motion.li
+                      key={candidate.id}
+                      className="p-4 bg-white rounded-lg shadow-md"
+                      
+                    >
+                      <p><strong>Name:</strong> {candidate.name}</p>
+                      <p><strong>Age:</strong> {candidate.age}</p>
+                      <p><strong>Votes:</strong> {candidate.votes}</p>
+                      <motion.button
+                        onClick={() => vote(candidate.id)}
+                        className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                        whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+
+                      >
+                        Vote
+                      </motion.button>
+                      <motion.button
+                        onClick={() => removeCandidate(candidate.id)}
+                        className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 ml-2"
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Remove Candidate
+                      </motion.button>
+                    </motion.li>
+                  ))}
+                </motion.ul>
               ) : (
-                <button
-                  onClick={checkWinner}
-                  className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 w-full">
-                  Check Winner
-                </button>
+                <p>No candidates available</p>
               )}
+            </div>
+
+            <div className="mb-4">
+              <motion.button
+                onClick={checkWinner}
+                className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 w-full"
+                whileHover={{ scale: 1.1 }}
+              >
+                Check Winner
+              </motion.button>
             </div>
           </>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 }
